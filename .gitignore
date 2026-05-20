@@ -1,0 +1,8 @@
+*.log
+localtunnel.*.log
+.DS_Store
+Thumbs.db
+node_modules/
+dist/
+build/
+Shoppertainment Website
