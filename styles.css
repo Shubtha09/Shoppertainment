@@ -373,8 +373,8 @@ textarea {
 }
 
 .brand img {
-  width: clamp(152px, 13vw, 220px);
-  max-height: 70px;
+  width: clamp(150px, 15vw, 230px);
+  max-height: 72px;
   object-fit: contain;
 }
 
@@ -1411,8 +1411,8 @@ p {
 }
 
 .site-footer img {
-  width: min(260px, 62vw);
-  max-height: 150px;
+  width: min(300px, 70vw);
+  max-height: 170px;
   object-fit: contain;
 }
 
