@@ -2,12 +2,10 @@ const header = document.querySelector("[data-header]");
 const menuPanel = document.querySelector("[data-menu-panel]");
 const menuToggle = document.querySelector("[data-menu-toggle]");
 const menuClose = document.querySelector("[data-menu-close]");
-const tiltPanel = document.querySelector("[data-tilt]");
 const stepsGrid = document.querySelector(".steps-grid");
 const revealTargets = document.querySelectorAll(
-  ".hero-copy > *, .statement-strip, .section-label, h2, .story-grid p, .capability-list article, .console-card, .console-copy p, .case-grid article, .study-card, .industry-grid article, .steps-grid article, .mini-grid article, .trust-stats article, .brand-showcase, .testimonial-grid blockquote, .contact-form"
+  ".hero-copy > *, .statement-strip, .section-label, h2, .story-grid p, .bucket, .work-controls, .w-card, .why-grid article, .steps-grid article, .mini-grid article, .trust-stats article, .brand-showcase, .testimonial-grid blockquote, .contact-actions > *"
 );
-const contactForm = document.querySelector(".contact-form");
 const customCursor = document.querySelector("[data-cursor]");
 const pageIntro = document.querySelector("[data-page-intro]");
 
@@ -103,6 +101,104 @@ revealTargets.forEach((target, index) => {
   observer.observe(target);
 });
 
+const workGrid = document.querySelector("[data-work-grid]");
+
+if (workGrid) {
+  const cards = Array.from(workGrid.querySelectorAll(".w-card"));
+  const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
+  const tagButtons = Array.from(workGrid.querySelectorAll(".w-tag"));
+  const activeTagChip = document.querySelector("[data-active-tag]");
+  const activeTagLabel = document.querySelector("[data-active-tag-label]");
+  const workCount = document.querySelector("[data-work-count]");
+  const emptyState = document.querySelector("[data-work-empty]");
+  const tagsOf = (card) => card.dataset.tags.split(",");
+
+  let activePractice = "all";
+  let activeTag = "";
+
+  filterButtons.forEach((button) => {
+    const value = button.dataset.filter;
+    const total = value === "all" ? cards.length : cards.filter((card) => card.dataset.practice === value).length;
+    const counter = button.querySelector("b");
+    if (counter) counter.textContent = String(total);
+  });
+
+  const applyFilter = () => {
+    let shown = 0;
+
+    cards.forEach((card) => {
+      const matchesPractice = activePractice === "all" || card.dataset.practice === activePractice;
+      const matchesTag = !activeTag || tagsOf(card).includes(activeTag);
+      const isVisible = matchesPractice && matchesTag;
+      card.hidden = !isVisible;
+      if (isVisible) shown += 1;
+    });
+
+    filterButtons.forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.filter === activePractice));
+    });
+
+    tagButtons.forEach((button) => {
+      button.classList.toggle("is-active", button.dataset.tag === activeTag);
+    });
+
+    if (activeTagChip) {
+      activeTagChip.hidden = !activeTag;
+      if (activeTag && activeTagLabel) {
+        const source = tagButtons.find((button) => button.dataset.tag === activeTag);
+        activeTagLabel.textContent = source ? source.textContent : activeTag;
+      }
+    }
+
+    if (workCount) {
+      workCount.textContent = shown === cards.length ? `Selected · ${cards.length} of 250+` : `${shown} of ${cards.length} shown`;
+    }
+
+    if (emptyState) emptyState.hidden = shown > 0;
+  };
+
+  filterButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activePractice = button.dataset.filter;
+      applyFilter();
+    });
+  });
+
+  tagButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      activeTag = activeTag === button.dataset.tag ? "" : button.dataset.tag;
+      applyFilter();
+    });
+  });
+
+  const clearTag = document.querySelector("[data-clear-tag]");
+  if (clearTag) {
+    clearTag.addEventListener("click", () => {
+      activeTag = "";
+      applyFilter();
+    });
+  }
+
+  document.querySelectorAll("[data-practice-link]").forEach((link) => {
+    link.addEventListener("click", () => {
+      activePractice = link.dataset.practiceLink;
+      activeTag = "";
+      applyFilter();
+    });
+  });
+
+  const resetFilters = document.querySelector("[data-reset-filters]");
+  if (resetFilters) {
+    resetFilters.addEventListener("click", () => {
+      activePractice = "all";
+      activeTag = "";
+      applyFilter();
+    });
+  }
+
+  applyFilter();
+}
+
 if (stepsGrid) {
   const stepsObserver = new IntersectionObserver(
     ([entry]) => {
@@ -112,37 +208,4 @@ if (stepsGrid) {
   );
 
   stepsObserver.observe(stepsGrid);
-}
-
-if (tiltPanel) {
-  tiltPanel.addEventListener("pointermove", (event) => {
-    const bounds = tiltPanel.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
-    tiltPanel.style.transform = `rotateX(${-y * 5}deg) rotateY(${x * 5}deg)`;
-  });
-
-  tiltPanel.addEventListener("pointerleave", () => {
-    tiltPanel.style.transform = "rotateX(0deg) rotateY(0deg)";
-  });
-}
-
-if (contactForm) {
-  contactForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    const data = new FormData(contactForm);
-    const name = data.get("name") || "Website visitor";
-    const company = data.get("company") || "";
-    const email = data.get("email") || "";
-    const message = data.get("message") || "";
-    const body = [
-      `Name: ${name}`,
-      `Company: ${company}`,
-      `Work email: ${email}`,
-      "",
-      String(message)
-    ].join("\n");
-
-    window.location.href = `mailto:admin@shoppertainment.in?subject=${encodeURIComponent("Project enquiry")}&body=${encodeURIComponent(body)}`;
-  });
 }
