@@ -1681,7 +1681,7 @@ p {
   backdrop-filter: blur(6px);
   color: var(--primary);
   font-family: "Space Grotesk", Inter, sans-serif;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -2535,7 +2535,7 @@ p {
     right: 14px;
     bottom: 14px;
     padding: 7px 11px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .hero-readout div {
@@ -2544,8 +2544,8 @@ p {
 
   .hero-readout span {
     margin-bottom: 8px;
-    font-size: 10px;
-    letter-spacing: 0.06em;
+    font-size: 11px;
+    letter-spacing: 0.05em;
   }
 
   h2 {
@@ -2803,5 +2803,59 @@ p {
 
   .trust-stats strong {
     font-size: 40px;
+  }
+}
+
+/* Touch devices: enlarge hit areas without changing the visual design.
+   Extra height is added above the text, so underlines and borders stay put. */
+@media (pointer: coarse) {
+  .primary-cta,
+  .secondary-cta {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: flex-end;
+  }
+
+  .header-nav a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .w-tag {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+  }
+
+  .w-study summary {
+    min-height: 44px;
+  }
+
+  .footer-col a {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .footer-col {
+    gap: 4px;
+  }
+
+  .footer-social a {
+    width: 46px;
+    height: 46px;
+  }
+
+  .work-active-tag button {
+    min-height: 40px;
+  }
+
+  .study-link,
+  .work-note a,
+  .contact-alt a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: flex-end;
   }
 }
