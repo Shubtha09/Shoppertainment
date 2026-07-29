@@ -4,7 +4,7 @@ const menuToggle = document.querySelector("[data-menu-toggle]");
 const menuClose = document.querySelector("[data-menu-close]");
 const stepsGrid = document.querySelector(".steps-grid");
 const revealTargets = document.querySelectorAll(
-  ".hero-copy > *, .statement-strip, .section-label, h2, .story-grid p, .bucket, .work-controls, .w-card, .why-grid article, .steps-grid article, .mini-grid article, .trust-stats article, .brand-showcase, .testimonial-grid blockquote, .contact-actions > *"
+  ".hero-copy > *, .statement-strip, .section-label, h2, .story-grid p, .bucket, .work-controls, .w-card, .team-grid article, .why-grid article, .steps-grid article, .mini-grid article, .trust-stats article, .brand-showcase, .testimonial-grid blockquote, .contact-actions > *"
 );
 const customCursor = document.querySelector("[data-cursor]");
 const pageIntro = document.querySelector("[data-page-intro]");
